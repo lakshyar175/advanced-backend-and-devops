@@ -1,120 +1,51 @@
-* {
-    box-sizing: border-box;
-}
-
 body {
-    margin: 0;
+    background-color: #141824;
+    color: white;
     font-family: Arial, sans-serif;
 }
 
-.main-container {
-    min-height: 100vh;
-    background: #f1f5f9;
-    padding: 50px 20px;
-}
-
-.header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.header h1 {
-    color: #1e293b;
-    font-size: 32px;
-    margin-bottom: 10px;
-}
-
-.header p {
-    color: #64748b;
-    font-size: 15px;
-}
-
 .auth-container {
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
-    gap: 30px;
-    max-width: 850px;
-    margin: auto;
-}
-
-.auth-card {
-    background: white;
-    width: 50%;
-    padding: 35px;
+    width: 350px;
+    margin: 80px auto;
+    padding: 30px;
+    background-color: #20283a;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    text-align: center;
 }
 
-.auth-card h2 {
-    color: #1e293b;
-    font-size: 24px;
-    margin-bottom: 8px;
+h2 {
+    margin-bottom: 20px;
 }
 
-.card-description {
-    color: #64748b;
-    margin-bottom: 25px;
-    font-size: 14px;
-}
-
-.auth-card input {
-    width: 100%;
-    padding: 13px;
-    margin-bottom: 18px;
-    border: 1px solid #cbd5e1;
+input {
+    width: 90%;
+    padding: 12px;
+    margin: 10px 0;
+    background-color: #30394d;
+    color: white;
+    border: 1px solid #59647a;
     border-radius: 6px;
-    font-size: 14px;
-    outline: none;
 }
 
-.auth-card input:focus {
-    border-color: #2563eb;
+input::placeholder {
+    color: #aaa;
 }
 
-.auth-card button {
-    width: 100%;
-    padding: 13px;
+button {
+    width: 97%;
+    padding: 12px;
+    margin-top: 12px;
+    background-color: #3478f6;
+    color: white;
     border: none;
     border-radius: 6px;
-    color: white;
-    font-size: 15px;
     cursor: pointer;
-    margin-top: 8px;
 }
 
-.register-btn {
-    background: #2563eb;
+button:hover {
+    background-color: #205dcc;
 }
 
-.register-btn:hover {
-    background: #1d4ed8;
-}
-
-.login-btn {
-    background: #059669;
-}
-
-.login-btn:hover {
-    background: #047857;
-}
-
-.refresh-btn {
-    background: #475569;
-}
-
-.refresh-btn:hover {
-    background: #334155;
-}
-
-@media (max-width: 650px) {
-    .auth-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .auth-card {
-        width: 100%;
-        max-width: 400px;
-    }
+.auth-box {
+    margin-bottom: 25px;
 }
