@@ -42,7 +42,7 @@ class User(Base):
     user_id = Column(Integer, primary_key=True)
     user_name = Column(String)
     password = Column(String)
-    # role = Column(String, nullable=True, default=None)
+    user_type = Column(String, default="staff")
 
 Base.metadata.create_all(engine)
 
@@ -68,10 +68,10 @@ def verify_login(username, password):
     except VerifyMismatchError:
         session.close()
         return False
-    
+    user_type = user_type
     session.close()
-    access_token = create_token(username=username, token_type = "access")
-    refresh_token = create_token(username=username, token_type = "refresh")
+    access_token = create_token(username=username, token_type = "access",  user_type = user_type)
+    refresh_token = create_token(username=username, token_type = "refresh",  user_type = user_type)
     return{"access_token": access_token, "refresh_token": refresh_token}
 
 
@@ -81,7 +81,7 @@ def verify_login(username, password):
     #     return {"access_token": access_token, "refresh_token": refresh_token}
     # return None
 
-def create_token(username, token_type):
+def create_token(username, token_type, user_type = "staff"):
     time = ACCESS_TOKEN_EXPIRY
     if token_type == "refresh":
       time = REFRESH_TOKEN_EXPIRY
@@ -89,6 +89,7 @@ def create_token(username, token_type):
         "username": username,
         "token_type": token_type,
         "exp": datetime.now(timezone.utc) + timedelta(minutes=time),
+        "user_type": user_type
         }
     token = jwt.encode(payload=payload, key=SECRET_KEY, algorithm=ALGORITHM)
     return token 
@@ -102,14 +103,23 @@ def verify_token(token, token_type):
         return payload["username"]
     return False
 
+def get_user_role(token):
+    try:
+        payload = jwt.decode(jwt=token, key=SECRET_KEY, algorithms=[ALGORITHM])
+        if payload["token_type"] != "access":
+            return False
+        return payload["user_type"]
+    except:
+        return False
+
 # ---users---
-def register_user(user_name:str, password:str):
+def register_user(user_name:str, password:str, user_type:str = "staff"):
     session = Session(engine)
     user_exists = session.query(User).filter_by(user_name=user_name).first()
     if user_exists is not None:
         session.close()
         return False
-    session.add(User(user_name=user_name, password=ph.hash(password)))
+    session.add(User(user_name=user_name, password=ph.hash(password), user_type=user_type))
     session.commit()
     session.close()
     return True

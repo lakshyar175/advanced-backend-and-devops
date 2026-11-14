@@ -11,8 +11,18 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
-# ROLES = ["store_manager", "delivery_partner"]
 
+USER_TYPE = ["admin", "staff"]
+
+def check_role(token, allowed_roles):
+    username = function.verify_token(token=token, token_type="access")
+    if not username and user_type:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+    user_type = function.get_user_role(token)
+    if user_type not in allowed_roles:
+        raise HTTPException(status_code=403, detail="Permission denied")
+
+    
 # Pydantic
 class packagedetails(BaseModel):
     package_name: str
@@ -30,15 +40,12 @@ class DispatchBatchDetails(BaseModel):
     destination: str
     vehicle: str
     package_ids: list[int]
-    dispatch_status: str = "pending"   
+    dispatch_status: str = "pending"       
 
-class DispatchStatusDetails(BaseModel):
-    dispatch_status: str     
-
-# class UserRegister(BaseModel):
-#     username: str
-#     password: str
-#     role: str            
+class UserRegister(BaseModel):
+    username: str
+    password: str
+    user_type: str            
 
 @app.post("/login")
 def login(username = Body(), password = Body()):
@@ -56,17 +63,17 @@ def refresh(refresh_token = Header(None)):
     return {"access_token": access_token}
 
 @app.post("/register_user")
-def register_user(user_name = Body(), password = Body()):
-    if functions.register_user(user_name=user_name, password=password):
+def register_user(user: UserRegister):
+    if user.user_type not in USER_TYPE:
+        raise HTTPException(status_code = 400, detail = "user_type must be admin or staff")
+    if functions.register_user(user_name=user.user_name, password=user.password, user_type=user.user_type):
         return{"message": "user registerd sucessfully"}
     raise HTTPException(status_code=400, detail="user already exists")
 
 # E1 
 @app.post("/packages")
 def register_package(package: packagedetails, token=Header(None)):
-    username = functions.verify_token(token=token, token_type="access")
-    if not username:
-        raise HTTPException(status_code=401, detail="Invalid or expiry token")
+    check_role(token, ["admin", "staff"]) 
     return functions.add_package( package.package_name,
         package.destination,
         package.weight,
@@ -76,9 +83,7 @@ def register_package(package: packagedetails, token=Header(None)):
 # E2 
 @app.get("/packages/{package_id}")
 def get_package(package_id: int, token = Header(None)):
-    username = functions.verify_token(token=token, token_type="access")
-    if not username:
-        raise HTTPException(status_code = 401, detail = "Invalid or expiry token")
+    check_role(token, ["admin", "staff"])
     response = functions.get_package(package_id)
     if response is None:
         raise HTTPException(status_code=404, detail="Package not found")
@@ -87,9 +92,7 @@ def get_package(package_id: int, token = Header(None)):
 # E3 
 @app.patch("/packages/{package_id}")
 def update_package(package: packageupdate, package_id: int, token = Header(None)):
-    username = functions.verify_token(token=token, token_type = "access")
-    if not username:
-        raise HTTPException(status_code = 401, detail = "Invalid or expiry token")
+    check_role(token, ["admin", "staff"])
     if package.weight is not None and package.weight <= 0:
         raise HTTPException(status_code=422, detail="Incorrect weight")
     data = {}
@@ -115,9 +118,7 @@ def update_package(package: packageupdate, package_id: int, token = Header(None)
 # E4 
 @app.delete("/packages/{package_id}")
 def delete_package(package_id: int, token = Header(None)):
-    username = functions.verify_token(token=token, token_type = "access")
-    if not username:
-        raise HTTPException(status_code = 401, detail = "Invalid or expiry token")
+    check_role(token, ["admin"])
     response = functions.delete_package(package_id)
     if response == "not_found":
         raise HTTPException(status_code=404, detail="Package not found")
@@ -128,9 +129,7 @@ def delete_package(package_id: int, token = Header(None)):
 # E5 
 @app.get("/packages")
 def get_packages(destination=None, status=None, arrival_date=None, token = Header(None)):
-    username = functions.verify_token(token=token, token_type = "access")
-    if not username:
-        raise HTTPException(status_code = 401, detail = "Invalid or expiry token")
+    check_role(token, ["admin", "staff"])
     if status and status not in ["pending", "assigned", "dispatched"]:
         raise HTTPException(status_code=422, detail="Invalid package status")
     return functions.get_all_packages(destination, status, arrival_date)
@@ -138,9 +137,7 @@ def get_packages(destination=None, status=None, arrival_date=None, token = Heade
 # E6 
 @app.get("/dispatch-batches")
 def get_dispatch_batches(destination=None, vehicle=None, dispatch_status=None, token = Header(None)):
-    username = functions.verify_token(token=token, token_type = "access")
-    if not username:
-        raise HTTPException(status_code = 401, detail = "Invalid or expiry token")
+    check_role(token, ["admin", "staff"])
     if dispatch_status and dispatch_status not in ["pending", "dispatched"]:
         raise HTTPException(status_code=422, detail="Invalid dispatch status")
     return functions.get_all_dispatch_batches(destination, vehicle, dispatch_status)
@@ -148,18 +145,13 @@ def get_dispatch_batches(destination=None, vehicle=None, dispatch_status=None, t
 # E7 
 @app.get("/warehouse/statistics")
 def warehouse_statistics(token = Header(None)):
-    username = functions.verify_token(token=token, token_type = "access")
-    if not username:
-        raise HTTPException(status_code = 401, detail = "Invalid or expiry token")
+    check_role(token, ["admin"])
     return functions.get_warehouse_statistics()
 
 # E8
 @app.post("/dispatch-batches")
 def create_dispatch_batch(package: DispatchBatchDetails, token=Header(None)):
-    username = functions.verify_token(token=token, token_type="access")
-    if not username:
-        raise HTTPException(status_code=401, detail="Invalid or expiry token")
-    
+    check_role(token, ["admin"])
     response = functions.create_dispatch_batch( package.destination,
         package.vehicle,
         package.package_ids,
