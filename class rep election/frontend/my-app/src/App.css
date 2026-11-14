@@ -1,0 +1,542 @@
+/* ==============================
+   MAIN APPLICATION
+============================== */
+
+.app {
+    min-height: 100vh;
+    width: 100%;
+    background: #f4f6fc;
+    color: #1e293b;
+}
+
+/* ==============================
+   HEADER
+============================== */
+
+.header {
+    background: linear-gradient(120deg, #172554, #4338ca, #6d28d9);
+    color: white;
+    text-align: center;
+    padding: 45px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.header h1 {
+    font-size: 36px;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.header p {
+    font-size: 16px;
+    color: #e0e7ff;
+    margin-top: 10px;
+}
+
+/* ==============================
+   PHASE BANNER
+============================== */
+
+.phase-banner {
+    width: 90%;
+    max-width: 1150px;
+    margin: 28px auto;
+    padding: 22px 28px;
+    background: white;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    box-shadow: 0 5px 20px rgba(30, 41, 59, 0.07);
+    border-left: 5px solid #6366f1;
+}
+
+.phase-banner span {
+    font-size: 16px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.phase-banner strong {
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.phase-nominations {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.phase-voting {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.phase-closed {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* ==============================
+   MAIN CONTENT
+============================== */
+
+.main-content {
+    width: 90%;
+    max-width: 1150px;
+    margin: 30px auto;
+}
+
+.page-section {
+    background: white;
+    padding: 32px;
+    margin-bottom: 30px;
+    border-radius: 18px;
+    box-shadow: 0 5px 25px rgba(30, 41, 59, 0.06);
+    border: 1px solid #e8eaf4;
+    transition: box-shadow 0.3s ease;
+}
+
+.page-section:hover {
+    box-shadow: 0 8px 28px rgba(30, 41, 59, 0.09);
+}
+
+.page-section h2 {
+    font-size: 25px;
+    color: #312e81;
+    margin-top: 0;
+    margin-bottom: 10px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #eef0ff;
+}
+
+.section-description {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.sub-heading {
+    color: #3730a3;
+    font-size: 19px;
+    margin-top: 30px;
+    margin-bottom: 18px;
+}
+
+/* ==============================
+   INPUTS AND FORMS
+============================== */
+
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 7px;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #d8ddec;
+    border-radius: 9px;
+    background: #fafbff;
+    color: #1e293b;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 18px;
+    outline: none;
+    transition: 0.25s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #6366f1;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+/* ==============================
+   BUTTONS
+============================== */
+
+button {
+    border: none;
+    border-radius: 9px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 13px rgba(0, 0, 0, 0.12);
+}
+
+button:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.primary-button {
+    background: linear-gradient(120deg, #4338ca, #6366f1);
+    color: white;
+}
+
+.secondary-button {
+    background: #eef2ff;
+    color: #4338ca;
+}
+
+.vote-button {
+    background: linear-gradient(120deg, #059669, #10b981);
+    color: white;
+    width: 100%;
+    margin-top: 12px;
+}
+
+.danger-button {
+    background: #ef4444;
+    color: white;
+}
+
+.voter-box {
+    display: flex;
+    align-items: end;
+    gap: 15px;
+    flex-wrap: wrap;
+    background: #f8faff;
+    padding: 22px;
+    border: 1px solid #e6eaff;
+    border-radius: 12px;
+    margin-bottom: 25px;
+}
+
+.voter-box input {
+    flex: 1;
+    min-width: 180px;
+    margin-bottom: 0;
+}
+
+.voter-box button {
+    background: #4338ca;
+    color: white;
+}
+
+/* ==============================
+   POSITION CARDS
+============================== */
+
+.position-box {
+    background: #f9faff;
+    padding: 23px;
+    border-radius: 13px;
+    margin: 20px 0;
+    border: 1px solid #e5e7f5;
+}
+
+.position-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.position-heading h3 {
+    color: #312e81;
+    font-size: 18px;
+    margin: 0;
+}
+
+/* ==============================
+   CANDIDATE CARDS
+============================== */
+
+.candidate-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.candidate-card {
+    background: white;
+    padding: 22px;
+    border-radius: 13px;
+    border: 1px solid #e3e7f3;
+    box-shadow: 0 3px 12px rgba(30, 41, 59, 0.04);
+    transition: all 0.3s ease;
+}
+
+.candidate-card:hover {
+    transform: translateY(-5px);
+    border-color: #a5b4fc;
+    box-shadow: 0 9px 22px rgba(67, 56, 202, 0.10);
+}
+
+.candidate-card h4 {
+    font-size: 17px;
+    color: #312e81;
+    margin-top: 0;
+}
+
+.candidate-card p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* ==============================
+   STATUS BADGES
+============================== */
+
+.voted-badge {
+    background: #dcfce7;
+    color: #15803d;
+    padding: 8px 13px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.pending-badge {
+    display: inline-block;
+    background: #fef3c7;
+    color: #a16207;
+    padding: 7px 12px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    margin: 8px 0 13px;
+}
+
+/* ==============================
+   MANIFESTO
+============================== */
+
+.manifesto-box {
+    background: #eef2ff;
+    border-left: 5px solid #6366f1;
+    padding: 23px;
+    margin-top: 22px;
+    border-radius: 10px;
+}
+
+.manifesto-box h3 {
+    color: #312e81;
+}
+
+.manifesto-box p {
+    line-height: 1.8;
+    color: #475569;
+}
+
+.muted-text {
+    color: #64748b;
+}
+
+/* ==============================
+   NOMINATION FORM
+============================== */
+
+.nomination-form,
+.withdraw-box {
+    background: #f8faff;
+    padding: 25px;
+    border: 1px solid #e5e7f5;
+    border-radius: 13px;
+    margin-bottom: 22px;
+}
+
+.nomination-form h3,
+.withdraw-box h3 {
+    color: #3730a3;
+    margin-top: 0;
+    margin-bottom: 22px;
+}
+
+/* ==============================
+   OFFICER SECTION
+============================== */
+
+.officer-phase-box {
+    background: linear-gradient(120deg, #eef2ff, #f5f3ff);
+    border: 1px solid #e0e7ff;
+    border-radius: 13px;
+    padding: 23px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.officer-phase-box h3 {
+    color: #312e81;
+    margin-top: 0;
+}
+
+.officer-phase-box p {
+    color: #64748b;
+}
+
+/* ==============================
+   MESSAGES
+============================== */
+
+.error-box {
+    background: #fff1f2;
+    color: #be123c;
+    border: 1px solid #fecdd3;
+    padding: 14px 17px;
+    border-radius: 9px;
+    margin: 16px 0;
+    font-size: 14px;
+}
+
+.success-box {
+    background: #ecfdf5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+    padding: 14px 17px;
+    border-radius: 9px;
+    margin: 16px 0;
+    font-size: 14px;
+}
+
+/* ==============================
+   RESULTS
+============================== */
+
+.results-section {
+    margin-top: 35px;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.results-table th,
+.results-table td {
+    border: 1px solid #e5e7eb;
+    padding: 14px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.results-table th {
+    background: #eef2ff;
+    color: #312e81;
+}
+
+.results-table tr:hover td {
+    background: #f8faff;
+}
+
+.winner-box {
+    margin-top: 17px;
+    padding: 16px;
+    border-radius: 10px;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #047857;
+}
+
+/* ==============================
+   FOOTER
+============================== */
+
+footer {
+    text-align: center;
+    color: #64748b;
+    padding: 28px 15px;
+    font-size: 13px;
+}
+
+/* ==============================
+   RESPONSIVE DESIGN
+============================== */
+
+@media (max-width: 700px) {
+
+    .header {
+        padding: 32px 15px;
+    }
+
+    .header h1 {
+        font-size: 26px;
+    }
+
+    .main-content,
+    .phase-banner {
+        width: 94%;
+    }
+
+    .page-section {
+        padding: 19px;
+    }
+
+    .phase-banner {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .voter-box {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .voter-box input {
+        width: 100%;
+    }
+
+    .voter-box button {
+        width: 100%;
+    }
+
+    .candidate-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .officer-phase-box {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .officer-phase-box button {
+        width: 100%;
+    }
+
+    .results-table th,
+    .results-table td {
+        padding: 9px;
+        font-size: 12px;
+    }
+}
