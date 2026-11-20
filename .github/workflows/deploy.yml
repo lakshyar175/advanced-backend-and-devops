@@ -3,6 +3,8 @@ name: CI/CD
 on:
   push:
     branches: [main]
+    path:
+     -warehouse/backend/**
   workflow_dispatch:
 
 jobs:
@@ -41,6 +43,6 @@ jobs:
             sudo systemctl enable --now docker
             sudo docker pull ${{ env.IMAGE }}:${{ env.VERSION }}
             sudo docker rm -f warehouse || true
-            sudo docker run -d --name warehouse --restart unless-stopped -p 8000:8000 ${{ env.IMAGE }}:${{ env.VERSION }}
+            sudo docker run -d --name warehouse --restart unless-stopped -p 8002:8000 ${{ env.IMAGE }}:${{ env.VERSION }}
             sudo docker image prune -af
             sudo docker ps --filter name=warehouse
