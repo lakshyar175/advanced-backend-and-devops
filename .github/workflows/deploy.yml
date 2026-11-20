@@ -9,8 +9,6 @@ jobs:
   build-push-deploy:
     runs-on: ubuntu-latest
     env:
-      # Docker Hub image name in the form <dockerhub-username>/<repo-name>, e.g. malnadhudga/todo-list.
-      # The username comes from the DOCKERHUB_USERNAME secret; change "todo-list" to your own repo name.
       IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/warehouse
       VERSION: v${{ github.run_number }}
     steps:
@@ -25,8 +23,8 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: dockerfile
+          context: ./warehouse/backend
+          file: ./warehouse/backend/dockerfile
           push: true
           tags: |
             ${{ env.IMAGE }}:latest
@@ -41,7 +39,6 @@ jobs:
           script: |
             set -e
             sudo systemctl enable --now docker
-            sudo usermod -aG docker $USER
             sudo docker pull ${{ env.IMAGE }}:${{ env.VERSION }}
             sudo docker rm -f warehouse || true
             sudo docker run -d --name warehouse --restart unless-stopped -p 8000:8000 ${{ env.IMAGE }}:${{ env.VERSION }}
