@@ -68,7 +68,7 @@ def verify_login(username, password):
     except VerifyMismatchError:
         session.close()
         return False
-    user_type = user_type
+    user_type = user.user_type
     session.close()
     access_token = create_token(username=username, token_type = "access",  user_type = user_type)
     refresh_token = create_token(username=username, token_type = "refresh",  user_type = user_type)
@@ -124,14 +124,14 @@ def register_user(user_name:str, password:str, user_type:str = "staff"):
     session.close()
     return True
 
-def register_user(user_name, password):
-    with Session(engine) as session:
-        if session.query(User).filter_by(user_name=user_name).first():
-            return False
-        hashed_password = ph.hash(password)
-        session.add(User(user_name=user_name, password=hashed_password))
-        session.commit()
-        return True
+# def register_user(user_name, password):
+#     with Session(engine) as session:
+#         if session.query(User).filter_by(user_name=user_name).first():
+#             return False
+#         hashed_password = ph.hash(password)
+#         session.add(User(user_name=user_name, password=hashed_password))
+#         session.commit()
+#         return True
 
 # E1
 def add_package(package_name, destination, weight, arrival_date):

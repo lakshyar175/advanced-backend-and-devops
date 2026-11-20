@@ -13,14 +13,24 @@ app.add_middleware(
 )
 
 USER_TYPE = ["admin", "staff"]
-
+# def check_role(token, allowed_roles):
+#     username = functions.verify_token(token=token, token_type="access")
+#     if not username:
+#         raise HTTPException(status_code=401, detail="Invalid or expired token")
+#     user_type = functions.get_user_role(token)
+#     if user_type not in allowed_roles:
+#         raise HTTPException(status_code=403, detail="Permission denied")
+    
 def check_role(token, allowed_roles):
-    username = function.verify_token(token=token, token_type="access")
-    if not username and user_type:
+    username = functions.verify_token(token=token, token_type="access")
+    if not username:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
-    user_type = function.get_user_role(token)
+    user_type = functions.get_user_role(token)
+    print("Username:", username)
+    print("User type:", user_type)
+    print("Allowed roles:", allowed_roles)
     if user_type not in allowed_roles:
-        raise HTTPException(status_code=403, detail="Permission denied")
+        raise HTTPException(status_code=403, detail="Permission denied")    
 
     
 # Pydantic
@@ -40,16 +50,18 @@ class DispatchBatchDetails(BaseModel):
     destination: str
     vehicle: str
     package_ids: list[int]
-    dispatch_status: str = "pending"       
+    dispatch_status: str = "pending"   
+
+    
 
 class UserRegister(BaseModel):
-    username: str
+    user_name: str
     password: str
     user_type: str            
 
 @app.post("/login")
-def login(username = Body(), password = Body()):
-    token = functions.verify_login(username=username, password=password)
+def login(user_name = Body(), password = Body()):
+    token = functions.verify_login(username=user_name, password=password)
     if not token:
         raise HTTPException(status_code=401, detail="Invalid")
     return token
@@ -62,7 +74,7 @@ def refresh(refresh_token = Header(None)):
     access_token = functions.create_token(username=username, token_type = "access")
     return {"access_token": access_token}
 
-@app.post("/register_user")
+@app.post("/register")
 def register_user(user: UserRegister):
     if user.user_type not in USER_TYPE:
         raise HTTPException(status_code = 400, detail = "user_type must be admin or staff")
